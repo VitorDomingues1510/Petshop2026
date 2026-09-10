@@ -1,0 +1,65 @@
+{
+  "info": {
+    "name": "PetShop API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/api/health"
+      }
+    },
+    {
+      "name": "Cadastrar categoria",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Ração\"\n}"
+        },
+        "url": "http://localhost:8080/api/categorias-produtos"
+      }
+    },
+    {
+      "name": "Listar categorias",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/api/categorias-produtos"
+      }
+    },
+    {
+      "name": "Cadastrar fornecedor",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"razaoSocial\": \"Pet Distribuidora Ltda\",\n  \"cnpj\": \"12345678000190\"\n}"
+        },
+        "url": "http://localhost:8080/api/fornecedores"
+      }
+    },
+    {
+      "name": "Cadastrar produto",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"codigoBarras\": \"7890000000001\",\n  \"descricao\": \"Ração Premium Cães 15kg\",\n  \"saldoEstoque\": 20,\n  \"valorUnitario\": 189.90,\n  \"estoqueMinimo\": 5,\n  \"categoriaId\": 1,\n  \"fornecedorId\": 1\n}"
+        },
+        "url": "http://localhost:8080/api/produtos"
+      }
+    },
+    {
+      "name": "Listar produtos",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/api/produtos"
+      }
+    }
+  ]
+}
