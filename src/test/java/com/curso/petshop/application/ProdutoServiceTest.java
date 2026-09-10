@@ -38,7 +38,7 @@ class ProdutoServiceTest {
 
     @Test
     void deveCadastrarProdutoComGrupoEFornecedor() {
-        CategoriaProduto categoria = categoriaRepository.save(new CategoriaProduto("Periféricos de teste"));
+        CategoriaProduto categoria = categoriaRepository.save(new CategoriaProduto("Ração de teste"));
         Fornecedor fornecedor = fornecedorRepository.save(new Fornecedor(
                 "Fornecedor de teste",
                 "11111111000191"));

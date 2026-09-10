@@ -60,7 +60,7 @@ class ProdutoApiTest {
                 .andExpect(header().exists("Location"))
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.codigoBarras").value("API-001"))
-                .andExpect(jsonPath("$.categoriaNome").value("Grupo API"))
+                .andExpect(jsonPath("$.categoriaNome").value("Ração"))
                 .andExpect(jsonPath("$.fornecedorRazaoSocial").value("Fornecedor API"));
     }
 
