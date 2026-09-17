@@ -1,7 +1,3 @@
--- Alternativa da Aula 04, se o Docker deste projeto nao for usado.
--- Caminho preferido: docker compose up -d (veja docs/banco-postgresql.md).
--- Se for executar aqui: Query Tool no banco postgres, com permissao de CREATE DATABASE.
-
 CREATE ROLE petshop_app
     WITH LOGIN
     PASSWORD 'petshop123';

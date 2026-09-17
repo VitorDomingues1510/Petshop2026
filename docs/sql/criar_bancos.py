@@ -1,5 +1,3 @@
-"""Cria usuario e bancos do petshop no PostgreSQL local."""
-
 from __future__ import annotations
 
 import sqlite3
