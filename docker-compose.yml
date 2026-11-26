@@ -3,19 +3,19 @@ services:
     image: postgres:16
     container_name: petshop-postgres
     environment:
-      POSTGRES_USER: petshop_app
-      POSTGRES_PASSWORD: petshop123
-      POSTGRES_DB: petshop2026_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
     ports:
       - "5433:5432"
     volumes:
-      - petshop_pgdata:/var/lib/postgresql/data
-      - ./docs/sql/docker-init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - petshop-pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U petshop_app -d petshop2026_dev"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
-      retries: 20
+      retries: 10
 
 volumes:
-  petshop_pgdata:
+  petshop-pgdata:

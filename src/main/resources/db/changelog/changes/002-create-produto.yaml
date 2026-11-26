@@ -2,7 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: 002-01-create-produto
       author: curso-spring-2026
-      comment: Cria a tabela principal de produtos do petshop.
+      comment: Cria a tabela principal de produtos.
       changes:
         - createTable:
             tableName: produto
@@ -27,12 +27,12 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: saldo_estoque
-                  type: NUMERIC(18, 3)
+                  type: NUMERIC(18,3)
                   constraints:
                     nullable: false
               - column:
                   name: valor_unitario
-                  type: NUMERIC(18, 2)
+                  type: NUMERIC(18,2)
                   constraints:
                     nullable: false
               - column:
@@ -46,7 +46,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: grupo_produto_id
+                  name: categoria_produto_id
                   type: BIGINT
                   constraints:
                     nullable: false
@@ -69,21 +69,21 @@ databaseChangeLog:
             constraintName: uk_produto_codigo_barras
 
   - changeSet:
-      id: 002-03-foreign-key-grupo-produto
+      id: 002-03-foreign-key-categoria-produto
       author: curso-spring-2026
-      comment: Liga cada produto ao seu grupo.
+      comment: Liga cada produto à sua categoria.
       changes:
         - addForeignKeyConstraint:
             baseTableName: produto
-            baseColumnNames: grupo_produto_id
-            referencedTableName: grupo_produto
+            baseColumnNames: categoria_produto_id
+            referencedTableName: categoria_produto
             referencedColumnNames: id
-            constraintName: fk_produto_grupo_produto
+            constraintName: fk_produto_categoria_produto
             onDelete: RESTRICT
       rollback:
         - dropForeignKeyConstraint:
             baseTableName: produto
-            constraintName: fk_produto_grupo_produto
+            constraintName: fk_produto_categoria_produto
 
   - changeSet:
       id: 002-04-check-saldo-estoque

@@ -72,7 +72,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: estoque_minimo
-                  type: NUMERIC(18, 3)
+                  type: NUMERIC(18,3)
       rollback:
         - dropColumn:
             tableName: produto
@@ -105,12 +105,12 @@ databaseChangeLog:
         - addNotNullConstraint:
             tableName: produto
             columnName: estoque_minimo
-            columnDataType: NUMERIC(18, 3)
+            columnDataType: NUMERIC(18,3)
       rollback:
         - dropNotNullConstraint:
             tableName: produto
             columnName: estoque_minimo
-            columnDataType: NUMERIC(18, 3)
+            columnDataType: NUMERIC(18,3)
 
   - changeSet:
       id: 003-07-check-estoque-minimo-produto
