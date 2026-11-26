@@ -1,7 +1,9 @@
 package com.curso.petshop.cliente;
 
+import com.curso.petshop.comum.ExclusaoNaoPermitidaException;
 import com.curso.petshop.comum.RecursoDuplicadoException;
 import com.curso.petshop.comum.RecursoNaoEncontradoException;
+import com.curso.petshop.venda.VendaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,9 +13,13 @@ import java.util.List;
 public class ClienteService {
 
     private final ClienteRepository repository;
+    private final VendaRepository vendaRepository;
 
-    public ClienteService(ClienteRepository repository) {
+    public ClienteService(
+            ClienteRepository repository,
+            VendaRepository vendaRepository) {
         this.repository = repository;
+        this.vendaRepository = vendaRepository;
     }
 
     @Transactional
@@ -53,6 +59,10 @@ public class ClienteService {
     @Transactional
     public void excluir(Long id) {
         Cliente cliente = buscarPorId(id);
+        if (vendaRepository.existsByClienteId(id)) {
+            throw new ExclusaoNaoPermitidaException(
+                    "Não é possível excluir: o cliente possui vendas vinculadas");
+        }
         repository.delete(cliente);
         repository.flush();
     }

@@ -2,11 +2,13 @@ package com.curso.petshop.produto;
 
 import com.curso.petshop.categoria.CategoriaProduto;
 import com.curso.petshop.categoria.CategoriaProdutoRepository;
+import com.curso.petshop.comum.ExclusaoNaoPermitidaException;
 import com.curso.petshop.comum.RecursoDuplicadoException;
 import com.curso.petshop.comum.RecursoNaoEncontradoException;
 import com.curso.petshop.comum.Status;
 import com.curso.petshop.fornecedor.Fornecedor;
 import com.curso.petshop.fornecedor.FornecedorRepository;
+import com.curso.petshop.venda.VendaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,14 +21,17 @@ public class ProdutoService {
     private final ProdutoRepository produtoRepository;
     private final CategoriaProdutoRepository categoriaRepository;
     private final FornecedorRepository fornecedorRepository;
+    private final VendaRepository vendaRepository;
 
     public ProdutoService(
             ProdutoRepository produtoRepository,
             CategoriaProdutoRepository categoriaRepository,
-            FornecedorRepository fornecedorRepository) {
+            FornecedorRepository fornecedorRepository,
+            VendaRepository vendaRepository) {
         this.produtoRepository = produtoRepository;
         this.categoriaRepository = categoriaRepository;
         this.fornecedorRepository = fornecedorRepository;
+        this.vendaRepository = vendaRepository;
     }
 
     @Transactional
@@ -107,6 +112,10 @@ public class ProdutoService {
     @Transactional
     public void excluir(Long id) {
         Produto produto = buscarPorId(id);
+        if (vendaRepository.existsByItensProdutoId(id)) {
+            throw new ExclusaoNaoPermitidaException(
+                    "Não é possível excluir: o produto possui vendas vinculadas");
+        }
         produtoRepository.delete(produto);
         produtoRepository.flush();
     }

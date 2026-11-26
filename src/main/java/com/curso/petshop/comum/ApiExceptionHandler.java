@@ -63,6 +63,17 @@ public class ApiExceptionHandler {
                 Map.of());
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ApiError> tratarOperacaoNaoPermitida(
+            IllegalStateException exception,
+            HttpServletRequest request) {
+        return resposta(
+                HttpStatus.CONFLICT,
+                exception.getMessage(),
+                request,
+                Map.of());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> tratarValidacao(
             MethodArgumentNotValidException exception,

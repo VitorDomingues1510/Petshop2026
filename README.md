@@ -8,6 +8,7 @@ API didática da disciplina de Programação, adaptada do projeto de referência
 - Produto: item identificado por código de barras, com saldo e valor unitário.
 - Fornecedor: empresa opcional associada ao produto.
 - Cliente: pessoa que compra no pet shop, identificada pelo CPF.
+- Venda: compra de um cliente, com os produtos, as quantidades e o valor total.
 
 Detalhes em [docs/tema-do-projeto.md](docs/tema-do-projeto.md).
 
@@ -53,6 +54,7 @@ Cada cadastro tem as operações cadastrar (`POST`), listar (`GET`), buscar por 
 - `/api/fornecedores`
 - `/api/produtos`
 - `/api/clientes`
+- `/api/vendas`: abrir (`POST`), listar, buscar por ID, adicionar item (`POST /{id}/itens`), remover item (`DELETE /{id}/itens/{itemId}`, retorna a venda atualizada), finalizar (`POST /{id}/finalizar`), cancelar (`POST /{id}/cancelar`) e excluir
 
 Categorias e produtos também têm alterar status (`PUT /{id}/status`). Produtos têm entrada (`POST /{id}/estoque/entrada`) e saída de estoque (`POST /{id}/estoque/saida`); uma saída maior que o saldo retorna `400`.
 
@@ -68,6 +70,7 @@ Cada parte do sistema fica em uma pasta própria dentro de `src/main/java/com/cu
 - `fornecedor`: fornecedores
 - `produto`: produtos
 - `cliente`: clientes
+- `venda`: vendas e itens da venda
 - `comum`: tratamento de erros, status e health check
 
 Cada pasta tem a entidade, o repository, o service, o controller, os DTOs de entrada e saída e o mapper.
@@ -85,6 +88,11 @@ Os testes de persistência acessam `petshop_test` e leem `DB_TEST_PASSWORD` do `
 ```text
 CategoriaProduto 1 ─────── N Produto
 Fornecedor       1 ─────── N Produto
+Cliente          1 ─────── N Venda
+Venda            1 ─────── N ItemVenda
+Produto          1 ─────── N ItemVenda
 ```
+
+A venda começa `ABERTA` e só pode ser alterada nesse status. Ao finalizar, o estoque dos produtos é baixado; a venda também pode ser cancelada. O preço unitário de cada item é copiado do produto quando o item é adicionado.
 
 O Liquibase cria e versiona o esquema; o Hibernate apenas o valida. Os profiles `dev`, `test` e `prod` usam PostgreSQL, sem H2.

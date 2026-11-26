@@ -1,0 +1,147 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-01-create-venda
+      author: curso-spring-2026
+      comment: Cria a tabela de vendas feitas para os clientes.
+      changes:
+        - createTable:
+            tableName: venda
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_venda
+                    nullable: false
+              - column:
+                  name: cliente_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: data_venda
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: venda
+
+  - changeSet:
+      id: 005-02-foreign-key-venda-cliente
+      author: curso-spring-2026
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: venda
+            baseColumnNames: cliente_id
+            referencedTableName: cliente
+            referencedColumnNames: id
+            constraintName: fk_venda_cliente
+            onDelete: RESTRICT
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: venda
+            constraintName: fk_venda_cliente
+
+  - changeSet:
+      id: 005-03-check-status-venda
+      author: curso-spring-2026
+      changes:
+        - sql:
+            sql: >
+              ALTER TABLE venda
+              ADD CONSTRAINT ck_venda_status
+              CHECK (status IN ('ABERTA', 'FINALIZADA', 'CANCELADA'))
+      rollback:
+        - sql:
+            sql: >
+              ALTER TABLE venda
+              DROP CONSTRAINT ck_venda_status
+
+  - changeSet:
+      id: 005-04-create-item-venda
+      author: curso-spring-2026
+      comment: Cria a tabela com os produtos de cada venda.
+      changes:
+        - createTable:
+            tableName: item_venda
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_item_venda
+                    nullable: false
+              - column:
+                  name: venda_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: produto_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: quantidade
+                  type: NUMERIC(18,3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: preco_unitario
+                  type: NUMERIC(18,2)
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: item_venda
+
+  - changeSet:
+      id: 005-05-foreign-keys-item-venda
+      author: curso-spring-2026
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: item_venda
+            baseColumnNames: venda_id
+            referencedTableName: venda
+            referencedColumnNames: id
+            constraintName: fk_item_venda_venda
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: item_venda
+            baseColumnNames: produto_id
+            referencedTableName: produto
+            referencedColumnNames: id
+            constraintName: fk_item_venda_produto
+            onDelete: RESTRICT
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: item_venda
+            constraintName: fk_item_venda_produto
+        - dropForeignKeyConstraint:
+            baseTableName: item_venda
+            constraintName: fk_item_venda_venda
+
+  - changeSet:
+      id: 005-06-check-item-venda
+      author: curso-spring-2026
+      changes:
+        - sql:
+            sql: >
+              ALTER TABLE item_venda
+              ADD CONSTRAINT ck_item_venda_valores
+              CHECK (quantidade > 0 AND preco_unitario >= 0)
+      rollback:
+        - sql:
+            sql: >
+              ALTER TABLE item_venda
+              DROP CONSTRAINT ck_item_venda_valores
