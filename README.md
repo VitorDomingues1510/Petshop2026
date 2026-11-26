@@ -7,6 +7,7 @@ API didática da disciplina de Programação, adaptada do projeto de referência
 - Categoria de produto: classificação dos itens (ração, higiene, brinquedos, farmácia).
 - Produto: item identificado por código de barras, com saldo e valor unitário.
 - Fornecedor: empresa opcional associada ao produto.
+- Cliente: pessoa que compra no pet shop, identificada pelo CPF.
 
 Detalhes em [docs/tema-do-projeto.md](docs/tema-do-projeto.md).
 
@@ -51,6 +52,7 @@ Cada cadastro tem as operações cadastrar (`POST`), listar (`GET`), buscar por 
 - `/api/categorias-produtos`
 - `/api/fornecedores`
 - `/api/produtos`
+- `/api/clientes`
 
 Categorias e produtos também têm alterar status (`PUT /{id}/status`). Produtos têm entrada (`POST /{id}/estoque/entrada`) e saída de estoque (`POST /{id}/estoque/saida`); uma saída maior que o saldo retorna `400`.
 
@@ -65,6 +67,7 @@ Cada parte do sistema fica em uma pasta própria dentro de `src/main/java/com/cu
 - `categoria`: categorias de produtos
 - `fornecedor`: fornecedores
 - `produto`: produtos
+- `cliente`: clientes
 - `comum`: tratamento de erros, status e health check
 
 Cada pasta tem a entidade, o repository, o service, o controller, os DTOs de entrada e saída e o mapper.

@@ -1,0 +1,71 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-01-create-cliente
+      author: curso-spring-2026
+      comment: Cria a tabela de clientes do pet shop identificados por CPF.
+      changes:
+        - createTable:
+            tableName: cliente
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_cliente
+                    nullable: false
+              - column:
+                  name: nome
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cpf
+                  type: VARCHAR(11)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: telefone
+                  type: VARCHAR(20)
+              - column:
+                  name: status
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: cliente
+
+  - changeSet:
+      id: 004-02-unique-cpf-cliente
+      author: curso-spring-2026
+      changes:
+        - addUniqueConstraint:
+            tableName: cliente
+            columnNames: cpf
+            constraintName: uk_cliente_cpf
+      rollback:
+        - dropUniqueConstraint:
+            tableName: cliente
+            constraintName: uk_cliente_cpf
+
+  - changeSet:
+      id: 004-03-check-status-cliente
+      author: curso-spring-2026
+      changes:
+        - sql:
+            sql: >
+              ALTER TABLE cliente
+              ADD CONSTRAINT ck_cliente_status
+              CHECK (status IN ('ATIVO', 'INATIVO'))
+      rollback:
+        - sql:
+            sql: >
+              ALTER TABLE cliente
+              DROP CONSTRAINT ck_cliente_status
